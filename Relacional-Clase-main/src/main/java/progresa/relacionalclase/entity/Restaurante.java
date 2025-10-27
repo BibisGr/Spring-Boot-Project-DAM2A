@@ -1,6 +1,5 @@
 package progresa.relacionalclase.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +24,6 @@ public class Restaurante {
     private  String nombre;
 
     @OneToOne(cascade = CascadeType.ALL)
-//    @JsonBackReference
     @JoinColumn(name="id_direccion") //clave ajena
 //    @PrimaryKeyJoinColumn
     private Direccion direccion;

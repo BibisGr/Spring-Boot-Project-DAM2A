@@ -14,6 +14,5 @@ import javax.validation.constraints.NotBlank;
 public class RestauranteDTO {
     @NotBlank
     private String nombre;
-
     private DireccionDto direccionDto;
 }

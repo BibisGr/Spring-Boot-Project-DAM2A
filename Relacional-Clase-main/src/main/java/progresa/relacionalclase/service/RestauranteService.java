@@ -3,7 +3,6 @@ package progresa.relacionalclase.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import progresa.relacionalclase.dao.ResturanteRepositorio;
 import progresa.relacionalclase.entity.Restaurante;
 
 import java.util.List;

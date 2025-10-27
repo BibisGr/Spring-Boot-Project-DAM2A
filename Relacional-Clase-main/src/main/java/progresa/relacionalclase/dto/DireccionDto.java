@@ -11,9 +11,8 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RestauranteDTO {
+public class DireccionDto {
     @NotBlank
-    private String nombre;
-
-    private DireccionDto direccionDto;
+    private  String calle;
+    private  String numero;
 }

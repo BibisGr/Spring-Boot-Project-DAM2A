@@ -1,5 +1,6 @@
 package progresa.relacionalclase.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,15 +25,16 @@ public class Restaurante {
     private  String nombre;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
     @JoinColumn(name="id_direccion") //clave ajena
 //    @PrimaryKeyJoinColumn
     private Direccion direccion;
 
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    private Set<ListadoImgs> imagenes;
-//
-//    @ManyToOne
-//    @JoinColumn(name="categoria_id", nullable = false)
-//    private categoria categoria;
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<ListadoImgs> imagenes;
+
+    @ManyToOne
+    @JoinColumn(name="categoria_id", nullable = false)
+    private Categoria categoria;
 }

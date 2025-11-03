@@ -14,21 +14,27 @@ public class DireccionService {
     @Autowired
     private DireccionRepository direccionRepository;
     public Optional<Direccion> getByCalle(String calle){
+
         return direccionRepository.findByCalle(calle);
     }
     public boolean existsByCalle(String calle){
+
         return direccionRepository.existsByCalle(calle);
     }
     public List<Direccion> list(){
+
         return direccionRepository.findAll();
     }
     public Optional<Direccion> getOne(long id){
+
         return  direccionRepository.findById(id);
     }
     public void save(Direccion direccion){
+
         direccionRepository.save(direccion);
     }
     public  void delete(long id){
+
         direccionRepository.deleteById(id);
     }
 }

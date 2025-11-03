@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,5 +15,8 @@ import javax.validation.constraints.NotBlank;
 public class RestauranteDTO {
     @NotBlank
     private String nombre;
-    private DireccionDto direccionDto;
+    private DireccionDto direccion;
+    private CategoriaDto categoria;
+    private ListadoImagenesDto imagenes; // cambiar este por
+    // private Set<ListadoImagenesDTO> imagenes;
 }

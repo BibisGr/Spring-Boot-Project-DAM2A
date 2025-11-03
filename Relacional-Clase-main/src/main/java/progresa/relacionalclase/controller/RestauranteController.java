@@ -7,11 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import progresa.relacionalclase.dto.Mensaje;
 import progresa.relacionalclase.dto.RestauranteDTO;
+import progresa.relacionalclase.entity.Categoria;
 import progresa.relacionalclase.entity.Direccion;
+import progresa.relacionalclase.entity.ListadoImgs;
 import progresa.relacionalclase.entity.Restaurante;
 import progresa.relacionalclase.service.RestauranteService;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/restaurante")
@@ -39,13 +43,13 @@ public class RestauranteController {
 
     @GetMapping("/detailname/{nombre}")
     public ResponseEntity<Restaurante> getByName(@PathVariable("nombre") String nombre){
-        if(restauranteService.existsByNombre(nombre))
-            return new ResponseEntity(new Mensaje ("no esiste el restaurante"), HttpStatus.NOT_FOUND);
+//        if(!restauranteService.existsByNombre(nombre))
+//            return new ResponseEntity(new Mensaje ("no existe el restaurante"), HttpStatus.NOT_FOUND);
         if (restauranteService.getByNombre(nombre).isPresent()){
             Restaurante restaurante = restauranteService.getByNombre(nombre).get();
             return   new ResponseEntity<>(restaurante, HttpStatus.OK);
         }
-        return new ResponseEntity(new Mensaje("no esiste el restaurante"), HttpStatus.OK);
+        return new ResponseEntity(new Mensaje("no existe el restaurante"), HttpStatus.OK);
     }
 
     @PostMapping("/create")
@@ -58,6 +62,7 @@ public class RestauranteController {
         Restaurante restaurante = new Restaurante();
         restaurante.setNombre(restauranteDto.getNombre());
 
+        //Control de Direccion
         Direccion direccion = new Direccion();
         //controlar que la calle no sea vac'ia
         if (StringUtils.isBlank(restauranteDto.getDireccionDto().getCalle()))
@@ -69,6 +74,7 @@ public class RestauranteController {
             return new ResponseEntity<>(
                     new Mensaje("el numero no puede estar vacio."),
                     HttpStatus.BAD_REQUEST);
+
         direccion.setNumero(restauranteDto.getDireccionDto().getNumero());
         direccion.setRestaurante(restaurante);
         restaurante.setDireccion(direccion);
@@ -85,5 +91,35 @@ public class RestauranteController {
         return new ResponseEntity<>(new Mensaje("el restaurante eliminado"), HttpStatus.OK);
     }
 
+    @PutMapping("update/{id}")
+    public ResponseEntity<?> update(
+            @PathVariable("id") long id,
+            @RequestBody RestauranteDTO restauranteDto) {
+        if(!restauranteService.existsById(id))
+            return new ResponseEntity(new Mensaje("el restaurante no existe"),
+                    HttpStatus.NOT_FOUND);
+        if (restauranteService.existsByNombre( restauranteDto.getNombre()) && restauranteService.getByNombre(restauranteDto.getNombre()).get().getId() != id)
+            return new ResponseEntity(new Mensaje("el nombre YA EXISTE"), HttpStatus.BAD_REQUEST);
+        if(StringUtils.isBlank(restauranteDto.getDireccionDto().getCalle()))
+            return new ResponseEntity<>(new Mensaje("el nombre es obligatrio"),  HttpStatus.BAD_REQUEST);
+        Restaurante restaurante = restauranteService.getOne(id).get();
+        restaurante.setNombre(restauranteDto.getNombre());
+
+        //Control de Direccion
+        //controlar que la calle no sea vac'ia
+        if (StringUtils.isBlank(restauranteDto.getDireccionDto().getCalle()))
+            return new ResponseEntity<>(
+                    new Mensaje("la calle no puede estar vacia."),
+                    HttpStatus.BAD_REQUEST);
+        restaurante.getDireccion().setCalle(restauranteDto.getDireccionDto().getCalle());
+        if (StringUtils.isBlank(restauranteDto.getDireccionDto().getNumero()))
+            return new ResponseEntity<>(
+                    new Mensaje("el numero no puede estar vacio."),
+                    HttpStatus.BAD_REQUEST);
+        restaurante.getDireccion().setNumero(restauranteDto.getDireccionDto().getNumero());
+
+        restauranteService.save(restaurante);
+        return  new ResponseEntity<>(new Mensaje("restaurante actualizado"), HttpStatus.OK);
+    }
 
 }

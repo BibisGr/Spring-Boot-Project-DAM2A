@@ -3,6 +3,7 @@ package progresa.relacionalclase.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import progresa.relacionalclase.dao.RestauranteRepository;
 import progresa.relacionalclase.entity.Restaurante;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 public class RestauranteService {
     @Autowired
-    ResturanteRepositorio resturanteRepositorio;
+    RestauranteRepository resturanteRepositorio;
 
     public List<Restaurante> list(){
         return resturanteRepositorio.findAll();
@@ -24,7 +25,7 @@ public class RestauranteService {
     }
 
     public Optional<Restaurante> getByNombre(String nombre){
-        return  resturanteRepositorio.findAllByNombre(nombre);
+        return  resturanteRepositorio.findByNombre(nombre);
     }
 
     public void save (Restaurante restaurante){
